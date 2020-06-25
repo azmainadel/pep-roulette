@@ -23,10 +23,12 @@
     </div>   
     
     <script type="text/javascript" charset="utf-8">
-        screenWidth =  (screen.width > 768) ? 450 : Number(0.85 * screen.width);
+        var screenWidth =  (screen.width > 768) ? 500 : 800;
+        var fontSize = (screen.width > 768) ? '16px' : '25px';
+        var banglaPadding = (screen.width > 768) ? -8 : 12;
         var padding = {top:20, right:40, bottom:0, left:0},
-            w = 500 - padding.left - padding.right;
-            h = 500 - padding.top  - padding.bottom;
+            w = screenWidth - padding.left - padding.right;
+            h = screenWidth - padding.top  - padding.bottom;
             r = Math.min(w, h)/2;
             rotation = 0;
             oldrotation = 0;
@@ -63,8 +65,11 @@
         var svg = d3.select('#chart')
             .append("svg")
             .data([data])
+            // .attr("viewBox", `0 0 500 500`)
+            // .attr("preserveAspectRatio", "xMidYMid");
             .attr("width",  w + padding.left + padding.right)
-            .attr("height", h + padding.top + padding.bottom);
+            .attr("height", h + padding.top + padding.bottom)
+            .attr("setAspectRatio", "xMinYMid");
 
         var container = svg.append("g")
             .attr("class", "chartholder")
@@ -100,7 +105,7 @@
             .text( function(d, i) {
                 return data[i].label;
             })
-			.style({"font-size":"15px", 'fill': 'white'});
+			.style({"font-size": fontSize, 'fill': 'white'});
 
         container.on("click", spin);
 
@@ -156,7 +161,7 @@
 
 
         svg.append("g")
-            .attr("transform", "translate(" + (w + padding.left + padding.right) + "," + ((h/2)+padding.top) + ")")
+            .attr("transform", "translate(" + (w + padding.left + padding.right + banglaPadding) + "," + ((h/2)+padding.top) + ")")
             .append("path")
             .attr("d", "M-" + (r*.15) + ",0L0," + (r*.05) + "L0,-" + (r*.05) + "Z")
             .style({'fill':"black"});
